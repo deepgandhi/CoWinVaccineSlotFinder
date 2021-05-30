@@ -28,6 +28,7 @@
     <FileVersion>4.2.0.0</FileVersion>
     <AssemblyVersion>4.2.0.0</AssemblyVersion>
     <UserSecretsId>107ac8ef-23d4-4f38-8773-00d3c45adaa5</UserSecretsId>
+    <AssemblyName>CoWinVaccineSlotFinder</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
@@ -44,7 +45,8 @@
 
   <ItemGroup>
     <Content Include="appsettings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
     </Content>
   </ItemGroup>
 
@@ -58,10 +60,6 @@
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.11.0" />
     <PackageReference Include="Telegram.Bot" Version="15.7.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\CoWin.UI\CoWin.UI.csproj" />
   </ItemGroup>
 
 </Project>
