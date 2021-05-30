@@ -216,11 +216,13 @@ namespace CoWiN.Models
                                 var appVersion = new VersionChecker(_configuration).GetCurrentVersionFromSystem();
                                 var uniqueId = Guid.NewGuid();
                                 var timeTakenToBook = ts.TotalSeconds;
+                                var source = System.Runtime.InteropServices.OSPlatform.Linux.ToString();
 
                                 var telemetryModel = new TelemetryModel
                                 {
                                     UniqueId = uniqueId,
                                     AppVersion = appVersion.ToString().Trim(),
+                                    Source = source.Trim(),
                                     BookedOn = DateTime.ParseExact(bookDate, "dd-MM-yyyy HH:mm:ss", new CultureInfo("en-US")),
                                     TimeTakenToBookInSeconds = timeTakenToBook,
                                     CaptchaMode = captchaMode.Trim(),
@@ -250,6 +252,7 @@ namespace CoWiN.Models
                                                       $"*State* : `{ cvc.StateName}`\n" +
                                                       $"*BeneficiaryCount* : `{ beneficiaries.Count}`\n" +
                                                       $"*AgeGroup* : `{_configuration["CoWinAPI:MinAgeLimit"]} - {_configuration["CoWinAPI:MaxAgeLimit"]}`\n" +
+                                                      $"*Source* : `{ source }`\n" +
                                                       $"*UniqueId* : `{ uniqueId }`\n");
                                 return;
                             }
