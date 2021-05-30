@@ -15,6 +15,7 @@ using System.Linq;
 using CoWin.Core.Models;
 using System.Threading;
 using System.Diagnostics;
+using System.IO;
 
 namespace CoWin.Auth
 {
@@ -24,8 +25,8 @@ namespace CoWin.Auth
         private readonly Dictionary<string, string> _mapping;
         private bool[] _lookup;
         private bool isIPThrottled = false;
-        private readonly string osxBeepPlayer = "say";
-        private readonly string osxBeepIPThrottledCommand = "Too Many Requests from Your IP Address. Please wait or try after sometime.";
+        private readonly string linuxBeepPlayer = "paplay";
+        private readonly string linuxBeepIPThrottledCommand = "linux_notifier.ogg  --volume 65536";
 
         public Captcha(IConfiguration configuration)
         {
@@ -176,8 +177,8 @@ namespace CoWin.Auth
         {
             while (!isIPThrottled)
             {
-                Process.Start(new ProcessStartInfo(osxBeepPlayer, osxBeepIPThrottledCommand) { UseShellExecute = true });
-                Thread.Sleep(5000);
+                Process.Start(new ProcessStartInfo(linuxBeepPlayer, Path.Combine(Directory.GetCurrentDirectory(), linuxBeepIPThrottledCommand)) { UseShellExecute = true });
+                Thread.Sleep(300);
             }
         }
     }

@@ -22,9 +22,8 @@ namespace CoWin.Auth
         private bool isOTPEntered = false;
         private bool isIPThrottled = false;
         private readonly string authTokenFilename = "authToken.json";
-        private readonly string osxBeepPlayer = "say";
-        private readonly string osxBeepOTPCommand = "Please Enter OTP";
-        private readonly string osxBeepIPThrottledCommand = "Too Many Requests from Your IP Address. Please wait or try after sometime.";
+        private readonly string linuxBeepPlayer = "paplay";
+        private readonly string linuxBeepIPThrottledCommand = "linux_notifier.ogg  --volume 65536";
 
         public OTPAuthenticator(IConfiguration configuration)
         {
@@ -228,8 +227,8 @@ namespace CoWin.Auth
         {
             while(!isOTPEntered)
             {
-                Process.Start(new ProcessStartInfo(osxBeepPlayer, osxBeepOTPCommand) { UseShellExecute = true });
-                Thread.Sleep(2000);
+                Process.Start(new ProcessStartInfo(linuxBeepPlayer, Path.Combine(Directory.GetCurrentDirectory(), linuxBeepIPThrottledCommand)) { UseShellExecute = true });
+                Thread.Sleep(300);
             }
         }
 
@@ -237,8 +236,8 @@ namespace CoWin.Auth
         {
             while (!isIPThrottled)
             {
-                Process.Start(new ProcessStartInfo(osxBeepPlayer, osxBeepIPThrottledCommand) { UseShellExecute = true });
-                Thread.Sleep(5000);
+                Process.Start(new ProcessStartInfo(linuxBeepPlayer, Path.Combine(Directory.GetCurrentDirectory(), linuxBeepIPThrottledCommand)) { UseShellExecute = true });
+                Thread.Sleep(300);
             }
         }
     }

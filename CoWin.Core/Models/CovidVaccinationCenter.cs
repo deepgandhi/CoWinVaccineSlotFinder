@@ -14,6 +14,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Globalization;
+using System.IO;
 
 namespace CoWiN.Models
 {
@@ -24,8 +25,8 @@ namespace CoWiN.Models
         private readonly List<string> _vaccinationCentresToSearch;
         public static bool IS_BOOKING_SUCCESSFUL = false;
         private bool isIPThrottled = false;
-        private readonly string osxBeepPlayer = "say";
-        private readonly string osxBeepIPThrottledCommand = "Too Many Requests from Your IP Address. Please wait or try after sometime.";
+        private readonly string linuxBeepPlayer = "paplay";
+        private readonly string linuxBeepIPThrottledCommand = "linux_notifier.ogg --volume 65536";
 
         public CovidVaccinationCenter(IConfiguration configuration, List<string> vaccinationCentresToSearch)
         {
@@ -216,11 +217,13 @@ namespace CoWiN.Models
                                 var appVersion = new VersionChecker(_configuration).GetCurrentVersionFromSystem();
                                 var uniqueId = Guid.NewGuid();
                                 var timeTakenToBook = ts.TotalSeconds;
+                                var source = System.Runtime.InteropServices.OSPlatform.Linux.ToString();
 
                                 var telemetryModel = new TelemetryModel
                                 {
                                     UniqueId = uniqueId,
                                     AppVersion = appVersion.ToString().Trim(),
+                                    Source = source.Trim(),
                                     BookedOn = DateTime.ParseExact(bookDate, "dd-MM-yyyy HH:mm:ss", new CultureInfo("en-US")),
                                     TimeTakenToBookInSeconds = timeTakenToBook,
                                     CaptchaMode = captchaMode.Trim(),
@@ -250,6 +253,7 @@ namespace CoWiN.Models
                                                       $"*State* : `{ cvc.StateName}`\n" +
                                                       $"*BeneficiaryCount* : `{ beneficiaries.Count}`\n" +
                                                       $"*AgeGroup* : `{_configuration["CoWinAPI:MinAgeLimit"]} - {_configuration["CoWinAPI:MaxAgeLimit"]}`\n" +
+                                                      $"*Source* : `{ source }`\n" +
                                                       $"*UniqueId* : `{ uniqueId }`\n");
                                 return;
                             }
@@ -410,8 +414,8 @@ namespace CoWiN.Models
         {
             while (!isIPThrottled)
             {
-                Process.Start(new ProcessStartInfo(osxBeepPlayer, osxBeepIPThrottledCommand) { UseShellExecute = true });
-                Thread.Sleep(5000);
+                Process.Start(new ProcessStartInfo(linuxBeepPlayer, Path.Combine(Directory.GetCurrentDirectory(), linuxBeepIPThrottledCommand)) { UseShellExecute = true });
+                Thread.Sleep(300);
             }
         }
 
