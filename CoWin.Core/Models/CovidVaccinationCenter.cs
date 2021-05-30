@@ -216,7 +216,7 @@ namespace CoWiN.Models
                                 var appVersion = new VersionChecker(_configuration).GetCurrentVersionFromSystem();
                                 var uniqueId = Guid.NewGuid();
                                 var timeTakenToBook = ts.TotalSeconds;
-                                var source = System.Runtime.InteropServices.OSPlatform.Linux.ToString();
+                                var source = System.Runtime.InteropServices.OSPlatform.OSX.ToString();
 
                                 var telemetryModel = new TelemetryModel
                                 {
