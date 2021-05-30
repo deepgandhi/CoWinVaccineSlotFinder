@@ -13,6 +13,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using CoWin.Core.Models;
+using System.Threading;
+using System.Diagnostics;
 
 namespace CoWin.Auth
 {
@@ -21,6 +23,10 @@ namespace CoWin.Auth
         private readonly IConfiguration _configuration;
         private readonly Dictionary<string, string> _mapping;
         private bool[] _lookup;
+        private bool isIPThrottled = false;
+        private readonly string osxBeepPlayer = "say";
+        private readonly string osxBeepIPThrottledCommand = "Too Many Requests from Your IP Address. Please wait or try after sometime.";
+
         public Captcha(IConfiguration configuration)
         {
             _configuration = configuration;
@@ -56,15 +62,15 @@ namespace CoWin.Auth
                 Console.WriteLine($"[WARNING] Session Expired : Regenerating Auth Token");
                 new OTPAuthenticator(_configuration).ValidateUser();
             }
-            else if (response.StatusCode == HttpStatusCode.Forbidden)
+            else if (response.StatusCode == HttpStatusCode.Forbidden || response.StatusCode == HttpStatusCode.TooManyRequests)
             {
+                new Thread(new ThreadStart(IPThrolledNotifier)).Start();
                 Console.ForegroundColor = ConsoleColor.DarkRed;
-                Console.WriteLine($"[FATAL] Response From Server: Too many hits from your IP address, hence request has been blocked. You can try following options :\n1.Switch to a different network which will change your current IP address.\n2.Close the application and try again after sometime ");
+                Console.WriteLine($"[FATAL] Response From Server: Too many hits from your IP address, hence request has been blocked. You can try following options :\n1.(By Default) Wait for {_configuration["CoWinAPI:ThrottlingRefreshTimeInSeconds"]} seconds, the Application will Automatically resume working.\n2.Switch to a different network which will change your current IP address.\n3.Close the application and try again after sometime");
                 Console.ResetColor();
-                Console.WriteLine("\nPress Enter Key to Exit The Application .....");
-                Console.ReadLine();
-                Environment.Exit(0);
-
+                Console.WriteLine($"[INFO] If you want to change the duration of refresh time, you can increase/decrease the value of ThrottlingRefreshTimeInSeconds in Config file and restart the Application");
+                Thread.Sleep(Convert.ToInt32(_configuration["CoWinAPI:ThrottlingRefreshTimeInSeconds"]));
+                isIPThrottled = true;
             }
             else
             {
@@ -88,8 +94,7 @@ namespace CoWin.Auth
             }
             else
             {
-                captchadata = new UI.Captcha().GetCaptchaValue(bitmapImage);
-                captchaSource = "Manual-Captcha";
+                throw new ArgumentNullException("CoWinAPI:Auth:AutoReadCaptcha", "AutoReadCaptcha can't be set to false as manual captcha is not supported for the platform");
             }
             Console.WriteLine($"[INFO] Captcha entered is from {captchaSource} and value is {captchadata}");
             return captchadata;
@@ -164,6 +169,14 @@ namespace CoWin.Auth
                 }
             }
             return new string(buffer, 0, index);
+        }
+        private void IPThrolledNotifier()
+        {
+            while (!isIPThrottled)
+            {
+                Process.Start(new ProcessStartInfo(osxBeepPlayer, osxBeepIPThrottledCommand) { UseShellExecute = true });
+                Thread.Sleep(5000);
+            }
         }
     }
 }
