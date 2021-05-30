@@ -65,6 +65,7 @@ namespace CoWin.Auth
             }
             else if (response.StatusCode == HttpStatusCode.Forbidden || response.StatusCode == HttpStatusCode.TooManyRequests)
             {
+                isIPThrottled = false;
                 new Thread(new ThreadStart(IPThrolledNotifier)).Start();
                 Console.ForegroundColor = ConsoleColor.DarkRed;
                 Console.WriteLine($"[FATAL] Response From Server: Too many hits from your IP address, hence request has been blocked. You can try following options :\n1.(By Default) Wait for {_configuration["CoWinAPI:ThrottlingRefreshTimeInSeconds"]} seconds, the Application will Automatically resume working.\n2.Switch to a different network which will change your current IP address.\n3.Close the application and try again after sometime");
