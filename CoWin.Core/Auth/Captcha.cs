@@ -69,7 +69,7 @@ namespace CoWin.Auth
                 Console.WriteLine($"[FATAL] Response From Server: Too many hits from your IP address, hence request has been blocked. You can try following options :\n1.(By Default) Wait for {_configuration["CoWinAPI:ThrottlingRefreshTimeInSeconds"]} seconds, the Application will Automatically resume working.\n2.Switch to a different network which will change your current IP address.\n3.Close the application and try again after sometime");
                 Console.ResetColor();
                 Console.WriteLine($"[INFO] If you want to change the duration of refresh time, you can increase/decrease the value of ThrottlingRefreshTimeInSeconds in Config file and restart the Application");
-                Thread.Sleep(Convert.ToInt32(_configuration["CoWinAPI:ThrottlingRefreshTimeInSeconds"]));
+                Thread.Sleep(Convert.ToInt32(_configuration["CoWinAPI:ThrottlingRefreshTimeInSeconds"]) * 1000);
                 isIPThrottled = true;
             }
             else
