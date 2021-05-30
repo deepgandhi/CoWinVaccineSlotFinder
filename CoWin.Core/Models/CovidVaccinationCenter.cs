@@ -54,6 +54,7 @@ namespace CoWiN.Models
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine($"[WARNING] Session Expired : Regenerating Auth Token");
+                Console.ResetColor();
                 new OTPAuthenticator(_configuration).ValidateUser();
             }
             else
