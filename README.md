@@ -6,8 +6,6 @@
 
 Software to fetch the available slots & book the appointment for COVID-19 Vaccination using the [APISetu APIs](https://apisetu.gov.in/public/marketplace/api/cowin/cowin-public-v2#/)
 
-### *__DUE TO LATEST CHANGES IN THE API ACCESS POLICY BY [MoHFW](https://www.mohfw.gov.in/pdf/CoWINAPIGuidelinesFinal240521.pdf), THERE WILL BE NO MORE COMMITS/CONTRIBUTIONS/RELEASES/MAINTENANCE IN THE PROJECT. THE PROJECT HAS BEEN PUT ON INDEFINITE HOLD AND MAY BE TAKEN DOWN SOON. GRATEFUL TO EVERY CONTRIBUTORS, SUPPORTERS, USERS THAT WE COULD HELP YOU IN THE CRISIS. WE RECOMMEND THAT YOU DON'T USE THE APP ANY LONGER TO SAVE YOURSELF YOUR LEGAL ISSUES.__*
-
 [![LatestRelease][release-shield]][release-version-url]
 [![Downloads][downloads-shield]][downloads-url]
 [![Stargazers][stars-shield]][stars-url]
@@ -33,6 +31,10 @@ Software to fetch the available slots & book the appointment for COVID-19 Vaccin
 > **NOTE:** _**Please make sure [these changes](#configuration-changes) are done in [Config file `appsettings.json`](#configuration-changes) before running the Software**_
 
 ### DISCLAIMER
+
+
+#### *__DUE TO LATEST CHANGES IN THE API ACCESS POLICY BY [MoHFW](https://www.mohfw.gov.in/pdf/CoWINAPIGuidelinesFinal240521.pdf), THERE WILL BE NO MORE COMMITS/CONTRIBUTIONS/RELEASES/MAINTENANCE IN THE PROJECT. THE PROJECT HAS BEEN PUT ON INDEFINITE HOLD. GRATEFUL TO EVERY CONTRIBUTORS, SUPPORTERS, USERS THAT WE COULD HELP YOU IN THE CRISIS. EVEN THOUGH YOU MAY STILL USE THE APP, WE ADVISE NOT TO MISUSE IT, OTHERWISE YOU MIGHT FACE LEGAL ISSUES. USE IT AT YOUR OWN RISK__*
+
 
 > **NOTE:** _Please go through the [Disclaimer](https://github.com/SRvSaha/CoWinVaccineSlotFinder/blob/master/DISCLAIMER.md), [End User Lisence Agreement](https://github.com/SRvSaha/CoWinVaccineSlotFinder/blob/master/EULA.md) & the [Privacy Policy](https://github.com/SRvSaha/CoWinVaccineSlotFinder/blob/master/PRIVACYPOLICY.md), proceed further only if you accept the [Terms and Conditions](https://github.com/SRvSaha/CoWinVaccineSlotFinder/blob/master/T&C.md) to use the Application/Software_
 
@@ -163,6 +165,7 @@ Following are some of the main features of the App:
 - [x] Verbose Mode to be Developed so that user can check each and every step as what is going on behind the scenes when slots are being fetched & processed
 - [x] Telemetry Metadata of Booking for Updating Statistics to see how the App is helping others. No Personal Information to be taken.
 - [x] Integration of Notification Engine with Telegram Bot
+- [ ] Native Cross-Platform Support 
  
 ## Technical Details
 
@@ -374,6 +377,10 @@ Enjoy and feel free to Star the Repo, if it could help you in any way!
 ### For Developers or Curious Minds:
 
 If you have Visual Studio installed, go ahead an Clone the Repository, Open the SLN file, Make changes in  `appsettings.json`, Ctrl + F5 and Boom!
+It will do the searching for you, but if you have turned on Auto-Captcha your booking won't work and you'll get `System.IO.InvalidDataException` exception. Reason for this is that AutoCaptcha needs an Base64 encoded Encrypted Trained Model which will be used for getting the captcha. Since it's not a good practice to HardCode it in Source Code, so it won't work unless you get the Encrypted Model and the Secret Key. 
+> Still curious about that, check out [CaptchaModel](https://github.com/SRvSaha/CoWinVaccineSlotFinder/blob/master/CoWin.Core/Models/CaptchaModel.cs) and [Crypto](https://github.com/SRvSaha/CoWinVaccineSlotFinder/blob/master/CoWin.Core/Models/Crypto.cs)
+
+However the standalone release for Windows has all these dependencies handled so you don't need to worry about anything! Everything will work seamlessly, we got your back!
 
 Well, want to dig deeper?
 
