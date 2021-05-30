@@ -60,6 +60,7 @@ namespace CoWin.Auth
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine($"[WARNING] Session Expired : Regenerating Auth Token");
+                Console.ResetColor();
                 new OTPAuthenticator(_configuration).ValidateUser();
             }
             else if (response.StatusCode == HttpStatusCode.Forbidden || response.StatusCode == HttpStatusCode.TooManyRequests)
