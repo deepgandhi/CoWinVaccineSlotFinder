@@ -134,7 +134,7 @@ namespace CoWin.Core.Models
         {
             Console.WriteLine($"*************************************************************************************************************************************************************");
             Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine($"Latest Version of the Software { latestVersionDto.Name} is { serverVersion }, Downloaded #{latestVersionDto.Assets[0].DownloadCount} times, Released on { latestVersionDto.PublishedAt.LocalDateTime} \n\nFeatures of the Updated Version:\n{latestVersionDto.Body}");
+            Console.WriteLine($"Latest Version of the Software { latestVersionDto.Name.Replace("windows", "osx") } is { serverVersion }, Downloaded #{latestVersionDto.Assets[0].DownloadCount} times, Released on { latestVersionDto.PublishedAt.LocalDateTime} \n\nFeatures of the Updated Version:\n{latestVersionDto.Body}");
             Console.WriteLine($"*************************************************************************************************************************************************************");
             Console.ResetColor();
 
