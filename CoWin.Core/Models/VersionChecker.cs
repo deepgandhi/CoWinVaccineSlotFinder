@@ -70,7 +70,7 @@ namespace CoWin.Core.Models
 
         private static void DownloadLatestVersion(VersionModel latestVersionDto)
         {
-            Process.Start(new ProcessStartInfo(latestVersionDto.Assets[0].BrowserDownloadUrl.AbsoluteUri) { UseShellExecute = true });
+            Process.Start(new ProcessStartInfo(latestVersionDto.Assets[0].BrowserDownloadUrl.AbsoluteUri.Replace("windows", "linux")) { UseShellExecute = true });
         }
 
         private Version GetVersionInfoFromServer(VersionModel latestVersionDto)
